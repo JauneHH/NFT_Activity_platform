@@ -1,0 +1,69 @@
+page{
+  background:#F2F2F3;
+}
+.activityUserContainer{
+  width: 100%;
+  height: 100%;
+  }
+  
+  .userSection{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background:#F8F8F8;
+    height: 10%;
+  }
+
+  .Section_item{
+    font-size: 24 px;
+  }
+  .Section_item.active{
+    color:#4297E3;
+    font-weight: bold;
+    font-size: 28 px;
+    font-style:initial;
+  }
+  
+  .activities{
+    display: flex;
+    position: relative;
+    height: 140px;
+    margin:15px;
+    border-radius: 20rpx;
+    background:white;
+    padding:5px;
+  }
+  .activityLogo{
+    height: 100px;
+    float:left;
+    margin:5px;
+    width: 80px;
+    background:grey;
+    border-radius: 15rpx;
+    
+    }
+  .activityInformation{
+
+  } 
+  .item{
+    height: 25px;
+    width: auto;
+    
+    color: #787572;
+  }
+ 
+  .informationItem{
+    color:#fff;
+    background-color:#F5CE67 ;
+    text-align: center;
+    width: 100px;
+    height: 25px;
+    border-radius: 15px;
+    position: relative;
+
+  }
+  
+    .activityButton{
+      display: flex;
+      width: 50px;
+    }

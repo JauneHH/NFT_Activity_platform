@@ -1,0 +1,19 @@
+<text>pages/NFT/NFT_list/NFT_list.wxml</text>
+<view class="Container">
+  <!--搜索-->
+  <view style="height: auto;width: auto;">
+    <van-search value="{{ value }}" placeholder="请输入搜索关键词" show-action bind:search="onSearch" bind:cancel="onCancel" />
+  </view>
+
+  <!--轮播图-->
+  <view class="RotationChart">
+  </view>
+
+  <!--分类栏-->
+  <view>
+  </view>
+
+  <!--NFT详情-->
+  <view>
+  </view>
+</view>

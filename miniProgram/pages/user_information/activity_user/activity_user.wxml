@@ -1,0 +1,108 @@
+<!--pages/activity/activity.wxml-->
+<view class="activityUserContainer">
+  <view class="userSection">
+    <block wx:for="{{status_item}}" wx:for-item="item">
+      <navigation-bar bindtap="change_status" data-id="{{item.id}}" class="Section_item {{curNav == item.id ? 'active' : ''}}">
+        {{item.name}}
+      </navigation-bar>
+    </block>
+  </view>
+
+  <view>
+    <block wx:if="{{curNav==2}}">
+      <block wx:for="{{activity}}" wx:for-item="item">
+        <view class="activities">
+          <view class="activityLogo">
+            <van-image width="80" src="{{item.img_url}}" height="100" />
+          </view>
+          <view>
+            <view style=" height: 25px;width:auto;margin-top:5px;font-size: 18px;">{{item.name}}</view>
+            <view class="item">时间：{{item.time}}</view>
+            <view class="item">地点：{{item.area}}</view>
+            <view style="display: flex;text-align: center;justify-content: space-between;margin-top: 30rpx;">
+              <block wx:if="{{item.status==1}}">
+                <view class="item" style="color:#E6A23C;">
+                  状态：待审核
+                </view>
+              </block>
+              <block wx:elif="{{item.status==2}}">
+                <view class="item" style="color:#F56C6C;">
+                  状态：审核未通过</view>
+              </block>
+              <block wx:elif="{{item.status==3}}">
+                <view class="item" style="color:#67C23A ;">
+                  状态：审核通过
+                </view>
+              </block>
+              <block wx:elif="{{item.status==0}}">
+              <view class="item" style="color:#909399;">
+                状态：待参与</view>
+              </block>
+
+              <view bindtap="activityInformationStatus" class="informationItem" id="{{item.id}}">查看详情</view>
+            </view>
+
+          </view>
+        </view>
+      </block>
+    </block>
+    <block wx:elif="{{curNav==1}}">
+      <block wx:for="{{activity}}" wx:for-item="item">
+        <block wx:if="{{item.status!=0}}">
+        <view class="activities">
+          <view class="activityLogo">
+            <van-image width="80" src="{{item.img_url}}" height="100" />
+          </view>
+          <view>
+            <view style=" height: 25px;width:auto;margin-top:5px;font-size: 18px;">{{item.name}}</view>
+            <view class="item">时间：{{item.time}}</view>
+            <view class="item">地点：{{item.area}}</view>
+            <view style="display: flex;text-align: center;justify-content: space-between;margin-top: 30rpx;">
+              <block wx:if="{{item.status==1}}">
+                <view class="item" style="color:#E6A23C;">
+                  状态：待审核
+                </view>
+              </block>
+              <block wx:elif="{{item.status==2}}">
+                <view class="item" style="color:#F56C6C;">
+                  状态：审核未通过</view>
+              </block>
+              <block wx:elif="{{item.status==3}}">
+                <view class="item" style="color:#67C23A ;">
+                  状态：审核通过
+                </view>
+              </block>
+
+              <view bindtap="activityInformationStatus" class="informationItem" id="{{item.id}}">查看详情</view>
+            </view>
+
+          </view>
+        </view>
+        </block>
+      </block>
+    </block>
+    <block wx:elif="{{curNav==0}}">
+      <block wx:for="{{activity}}" wx:for-item="item">
+        <block wx:if="{{item.status==0}}">
+          <view class="activities">
+            <view class="activityLogo">
+              <van-image width="80" src="{{item.img_url}}" height="100" />
+            </view>
+            <view>
+              <view style=" height: 25px;width:auto;margin-top:5px;font-size: 18px;">{{item.name}}</view>
+              <view class="item">时间：{{item.time}}</view>
+              <view class="item">地点：{{item.area}}</view>
+              <view style="display: flex;text-align: center;justify-content: space-between;margin-top: 30rpx;">
+                <view class="item" style="color:#909399;">
+                  状态：待参与</view>
+                <view bindtap="activityInformationStatus" class="informationItem" id="{{item.id}}">查看详情</view>
+              </view>
+
+            </view>
+          </view>
+        </block>
+      </block>
+    </block>
+  </view>
+
+</view>

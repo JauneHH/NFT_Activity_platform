@@ -1,0 +1,45 @@
+<!--pages/activity/activity_upload/activity_upload.wxml-->
+<view class="Container">
+  <!--活动信息-->
+
+  <!--提交图片-->
+  <view class="mediaBox">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">选择图片作为你的NFT</text>
+    <van-divider/>
+    
+      <view class="picBox">
+        <block wx:for="{{imgs}}" wx:for-item="item">
+          <view wx:if="{{item.type=='image'}}" class="pic" bindtap="previewImg">
+            <van-image width="100px" height="100px" fit="cover" src="{{item.tempFilePath}}" />
+          </view>
+          <view wx:if="{{item.type=='video'}}" class="pic" >
+            <video style="height: 100px;width: 100px;" src="{{item.tempFilePath}}"></video>
+          </view>
+        </block>
+        <view class="picSelect" bindtap="chooseMedia">
+          <van-image width="100px" height="100px" src="/static/images/WeChat9ff7af5431b663030caff767e1ed65cb.png" />
+        </view>
+      </view>
+    
+  </view>
+
+
+
+  <van-dialog width:200px height:200 use-slot title="标题" show="{{ show }}" show-cancel-button
+    confirm-button-open-type="getUserInfo">
+    <van-image width="100px" height="100px" />
+  </van-dialog>
+  <van-dialog id="van-dialog" />
+
+  <van-dialog use-slot title="NFT获取二维码" show="{{ show_qrCode }}" confirm-button-open-type="onClose" bind:close="onClose" >
+    <image bindtap="previewQRCodeImg" style="object-fit: cover;" data-src="{{qrCode_url}}"  src="{{qrCode_url}}" />
+    </van-dialog>
+  <!--提交按钮-->
+
+  <view class="submitBox">
+  
+      <van-button bindtap="UploadMedia" color="#F56C6C" round type="none">确认提交</van-button>
+    
+  </view>
+
+</view>

@@ -1,0 +1,73 @@
+<!--pages/activity/activity.wxml-->
+
+<van-search value="{{ value }}" placeholder="请输入搜索关键词" show-action bind:search="onSearch" bind:cancel="onCancel">
+  <view slot="action" bindtap="onClick" data-id="{{value}}">搜索</view>
+</van-search>
+<view class="Container">
+  <!--左侧边栏-->
+  <block wx:if="{{container_is_show}}">
+    <view class="nav_left">
+      <block wx:for="{{title}}" wx:for-item="item" wx:key="index">
+        <block wx:if="{{curNav==0}}">
+          <view class="nav_left_items {{curNav == item.id ? 'active' : ''}}" bindtap="click" data-id="{{item.id}}">
+            <view style="display: flex;">
+              <block wx:if="{{curNav == item.id}}">
+                <van-icon name="/static/select.png" />
+              </block>
+              {{item.name}}
+            </view>
+          </view>
+        </block>
+        <block wx:elif="{{curNav!=0}}">
+          <view class="nav_left_items {{curNav == item.name ? 'active' : ''}}" bindtap="click" data-id="{{item.id}}">
+            <view style="display: flex;">
+              <block wx:if="{{curNav == item.name}}">
+                <van-icon name="/static/select.png" />
+              </block>
+              {{item.name}}
+            </view>
+          </view>
+        </block>
+      </block>
+    </view>
+
+    <!--右侧边详细图-->
+    <view class="nav_right">
+      <block wx:for="{{goods}}" wx:for-item="item">
+        <block wx:if="{{curNav==0}}">
+          <view wx:if="{{item.name!=null}}" class="nav_right_items" bindtap="activity_information" data-id="{{item.id}}">
+            <van-image width="80px" radius="10px" height="100px" src="{{item.img_url}}" />
+            <view>
+              <view style="width:100px;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;margin:10px;font-size:20px;">{{item.name}}</view>
+              <view style="text-align:center;background:#FCECD0;color:#F1B573;font-size:12px; margin:10px;padding:2px;width:30px;">{{item.type}}</view>
+              <view style="color:#B3B3B3;margin:10px;">{{item.time}}</view>
+            </view>
+          </view>
+        </block>
+        <view wx:elif="{{item.type==curNav}}" class="nav_right_items" bindtap="activity_information" data-id="{{item.id}}">
+          <van-image width="80px" radius="10px" height="100px" src="{{item.img_url}}" />
+            <view>
+              <view style="width:100px;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;margin:10px;font-size:20px;">{{item.name}}</view>
+              <view style="text-align:center;background:#FCECD0;color:#F1B573;font-size:12px; margin:10px;padding:2px;width:30px;">{{item.type}}</view>
+              <view style="color:#B3B3B3;margin:10px;">{{item.time}}</view>
+            </view>
+        </view>
+      </block>
+
+    </view>
+  </block>
+  <block wx:if="{{!container_is_show}}">
+    <block wx:for="{{Search_List}}" wx:for-item="item">
+      <view wx:if="{{item.name!=null}}" class="nav_right_items" bindtap="activity_information" data-id="{{item.id}}">
+        <van-image width="80px" radius="10px" height="100px" src="{{item.img_url}}" />
+            <view>
+              <view style="width:100px;white-space:nowrap;overflow:hidden;text-overflow: ellipsis;margin:10px;font-size:20px;">{{item.name}}</view>
+              <view style="text-align:center;background:#FCECD0;color:#F1B573;font-size:12px; margin:10px;padding:2px;width:30px;">{{item.type}}</view>
+              <view style="color:#B3B3B3;margin:10px;">{{item.time}}</view>
+            </view>
+
+      </view>
+    </block>
+  </block>
+
+</view>

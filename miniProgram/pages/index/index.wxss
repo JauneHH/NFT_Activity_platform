@@ -1,0 +1,14 @@
+
+
+.Container{
+ text-align: center;
+}
+.head{
+  margin: 0 auto;
+  width: 90%;
+  height: 400rpx;
+  border-radius: 20rpx;
+}
+.headimg{
+  width: 100%;
+}

@@ -1,0 +1,32 @@
+<!--pages/NFT/NFT.wxml-->
+
+<view class="Container">
+  <!--image-->
+  <view class="NFT_item">
+    <van-image width="400rpx" fit='cover' height="450rpx" radius='40rpx' src="{{NFT_information.img_url}}" data-src="{{NFT_information.img_url}}" data-list="{{NFT_information.img_url}}" bindtap="previewImage"/>
+  </view>
+
+  <!--information-->
+  <view class="NFT_information">
+    <view style="display: flex;flex-direction: column;margin:20rpx;">
+      <text style="color: #9C9C9C">NFT名称</text>
+      <text style="color: white;font-size:x-large;font-weight: bold;">{{NFT_information.NFT_name}}</text>
+    </view>
+    <view style="display: flex;flex-direction: column;margin:20rpx;">
+      <text style="color: #9C9C9C">收藏者</text>
+      <text style="color: white;font-size:x-large;font-weight: bold;">{{userInfo.name}}</text>
+    </view>
+    <view style="display: flex;flex-direction: column;align-items:center;margin:20rpx;">
+      <text style="color: #9C9C9C">Signature</text>
+      <view style="margin:10rpx;padding:20rpx;width:auto;border-radius:20rpx;text-align: center;background:#FCECD0;color:#F1B573;width: 90%;height: auto;word-wrap:break-word;">{{NFT_information.signature}}</view>
+    </view>
+
+    <view style="display: flex;flex-direction: column;margin:20rpx;">
+      <text style="color: #9C9C9C">获取时间</text>
+      <text style="color: white;font-size:x-large;font-weight: bold;">{{NFT_information.NFT_time}}</text>
+    </view>
+
+  </view>
+  <view style="margin:20rpx;"><text style="color: #9C9C9C">备注信息</text></view>
+
+</view>

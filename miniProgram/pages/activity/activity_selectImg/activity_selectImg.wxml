@@ -1,0 +1,51 @@
+<!--pages/activity/activity_upload/activity_upload.wxml-->
+
+<view class="Container">
+  <!--活动信息-->
+
+  <view class="activtyBox">
+    <view class="activtyImage">
+      <van-image src="{{img_url}}" width="120" height="140" />
+    </view>
+
+    <view class="activtyInformationList">
+      <view>{{name}}</view>
+      <view
+        style="margin-top: 25%; float: right; border-radius:20px;width: 120rpx;height: 50rpx;text-align: center;background-color: #4C8FF2;color: white;">
+        进行中
+      </view>
+      <view style="width: auto;">截止时间：
+        {{time}}
+      </view>
+    </view>
+  </view>
+
+  <!--提交图片-->
+  <view class="ruleBox">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">图片/视频</text>
+    <view class="picBox">
+      <block wx:for="{{imgs}}" wx:for-item="item">
+        <view wx:if="{{item.type=='image'}}" class="pic" bindtap="previewImg">
+          <van-image width="100px" height="100px" fit="none" src="{{item.tempFilePath}}" />
+        </view>
+        <view wx:if="{{item.type=='video'}}" class="pic" bindtap="previewMed">
+          <video style="height: 100px;width: 100px;" src="{{item.tempFilePath}}"></video>
+        </view>
+
+      </block>
+      <view class="picSelect" bindtap="chooseMedia">
+        <van-image width="100px" height="100px" src="/static/images/WeChat9ff7af5431b663030caff767e1ed65cb.png" />
+      </view>
+    </view>
+  </view>
+
+  <van-dialog width:200px height:200 use-slot title="标题" show="{{ show }}" show-cancel-button confirm-button-open-type="getUserInfo">
+    <van-image width="100px" height="100px" />
+  </van-dialog>
+  <van-dialog id="van-dialog" />
+
+  <!--提交按钮-->
+  <view class="submitBox">
+    <van-button bindtap="UploadMedia" round type="none">确认提交</van-button>
+  </view>
+</view>

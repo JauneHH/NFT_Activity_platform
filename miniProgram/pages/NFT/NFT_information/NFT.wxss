@@ -1,0 +1,60 @@
+/* pages/NFT/NFT_user/NFT_user.wxss */
+.Container {
+  width: 100%;
+  height: 1500rpx;
+  background: #060E15;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user_information {
+  width: 100%;
+  height: auto;
+  background: #060e15bb ;
+  display: flex;
+  border: 1px black;
+  align-items: center;
+
+}
+
+.portrait {
+
+  width: 100rpx;
+  height: 100rpx;
+  border: 5rpx solid #fff;
+  border-radius: 50%;
+  float: right;
+  margin: 30rpx;
+}
+
+.NFT_container {
+  width: 100%;
+  background: #060E15;
+  display: flex;
+  justify-content: space-between;
+  height: auto;
+  border-radius:20rpx  20rpx 0 0;
+}
+
+.NFT_item {
+  margin: 50rpx;
+  width: 400rpx;
+  height: 450rpx;
+  background: linear-gradient(to bottom,#BABABA, #1a1a1a );
+  border: 2px black;
+  border-radius: 40rpx;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+
+}
+.NFT_information{
+  border: 1px bold;
+  border-radius: 20rpx;
+  width: 90%;
+  height: auto;
+  text-align: center;
+  background: #0b141d;
+}

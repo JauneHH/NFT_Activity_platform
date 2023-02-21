@@ -1,0 +1,11 @@
+<view style="text-align: center;">
+  <van-image round width="10rem" height="10rem" src="/static/home.jpeg" />
+  <view style="margin-top:30rpx;">
+    <van-button size='normal' color="#FF8C00" plain bindtap='wx_login' lang="zh_CN" round>
+      <view  style="display: flex;justify-content: space-between;text-align: center;font-size: medium;">
+        <van-icon size='20px' name='/static/login.png'></van-icon>  
+          全新开启  
+      </view>
+    </van-button>
+  </view>
+</view>

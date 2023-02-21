@@ -1,0 +1,94 @@
+<!--pages/user_information/user_information.wxml-->
+
+<view class="personalcontainer">
+  <!--个人信息-->
+
+  <view class="information">
+    <view class="user-info-box">
+      <view class="username">
+      <block wx:if="{{userid!=null}}">
+        <view style="font-size:20px;font-weight:bold;" >{{userInfo.name}}</view>
+      </block>
+      <block wx:else="{{userid==null}}">
+        <view style="font-size:20px;font-weight:bold;" bindtap="getUserProfile">点击登陆账户</view>
+      </block>
+        
+      </view>
+      <view class="fans">
+        <view class="margin:20rpx;">
+          <view>47</view>
+          <view>关注</view>
+        </view>
+        <view style="width: 2px;height:50px; background-color:#D8D8D8;"></view>
+        <view class="margin:20rpx;">
+          <view>17</view>
+          <view>粉丝</view>
+        </view>
+      </view>
+
+    </view>
+
+    <view class="change_information_box">
+      <view style="width:90px;height:25px;border:5rpx solid #A4A1A1;border-radius:20px;color:#A4A1A1">
+         编辑资料
+      </view>
+    </view>
+
+    <view class="portrait-box">
+      <image class="portrait" src="{{userInfo.avatarUrl}}"></image>
+    </view>
+  </view>
+
+  <!--常用功能-->
+  <view class="box">
+    <view class="text" bindtap="testClick">常用功能</view>
+    <view class="line"></view>
+    <view class="LogoContainer">
+      <view class="activity_item">
+        <van-icon name="/static/wallet.png"  size="40px" />
+        卡券
+      </view>
+      <view class="activity_item">
+        <van-icon name="/static/star.png" size="40px" />
+        收藏
+      </view>
+      <view class="activity_item" bindtap="get_user_NFT">
+        <van-icon name="/static/NFT.png"   size="40px" />
+        数字资产
+      </view>
+    </view>
+  </view>
+
+  <!--个人活动-->
+  <view class="box">
+    <view class="text">我的活动</view>
+    <view class="line"></view>
+    <view class="LogoContainer">
+      <view class="activity_item" bindtap="get_user_activity" data-id="1">
+        <van-icon name="/static/finish.png" size="40px" />
+        已参与
+      </view>
+      <view class="activity_item" bindtap="get_user_activity" data-id="0">
+        <van-icon name="/static/history.png" size="40px" />
+        待参与
+      </view>
+      <view class="activity_item" bindtap="get_user_activity">
+        <van-icon name="/static/comment.png" size="40px" />
+        待评价
+      </view>
+    </view>
+  </view>
+
+    <!--摄影师界面-->
+    <view class="box">
+    <view class="text">摄影师</view>
+    <view class="line"></view>
+    <view class="LogoContainer">
+      <view class="activity_item">
+        <van-icon name="/static/photo.png" size="40px" bindtap="upload_NFT" />
+        拍摄
+      </view>
+    </view>
+  </view>
+
+</view>

@@ -1,0 +1,168 @@
+<!--pages/activity_information/activity_information.wxml-->
+
+<view class="Container">
+  <!--头像-->
+  <view class="acitivityHead">
+    <view class=" activityLogo">
+      <van-image radius="15rpx;" src="{{activity_information.img_url}}" width="100" height="120" />
+    </view>
+    <view>
+      <view class=" item"><text style="font-size:18px;font-weight: bold;">{{activity_information.name}}</text></view>
+      <view class=" item"><text style="font-size:15px;color:#8C8A8A;">活动类型:{{activity_information.type}}</text></view>
+      <!--
+      <view class="item_collect">
+        <van-icon name="like-o" size="25px" />
+        <text style="font-size:18px">收藏活动</text>
+      </view>      
+      -->
+    </view>
+
+  </view>
+
+  <view class="activityInformation">
+    <!--状态-->
+    <view class="activityStatus">
+      <view style="display:inline;">
+        <view style="color:red;font-size:20px;margin:4px;">(票价/免费)</view>
+        <view style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#B3B3B3;font-size:16px;margin:4px;">
+          时间：{{time}}</view>
+      </view>
+    </view>
+    <!--地点-->
+    <!--
+      地点
+        <view bindtap="autoGetLocation" data-id="{{activity_information.area}}" class="activityLocation">
+      <view style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;margin:10px;font-size:20px;">
+        地点：{{activity_information.area}}
+      </view>
+      <van-icon name="/static/location.png" style="margin:5px;" size="30px" />
+    </view>
+    -->
+    <van-divider />
+    <view bindtap="market_showPopup" data-id="{{activity_information.area}}" style="display: flex; align-items: center; justify-content: space-between;">
+      <view style="display: flex; align-items: center;">
+        <van-icon name="/static/location.png" style="margin-left:5px;" size="25px" />
+        <view style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;margin:5px;font-size:medium;">
+          地点列表
+        </view>
+      </view>
+      <view style="display: flex; align-items: center;">
+        <view style="white-space:nowrap;overflow:hidden;text-overflow: ellipsis;margin:5px;font-size:medium;"> {{market_list[0].name}}..</view>
+        <van-icon name="/static/right.png"></van-icon>
+      </view>
+    </view>
+
+    <!--地点列表-->
+    <van-popup show="{{ market_show }}" round position="bottom" custom-style="height: 50%" bind:close="market_onClose">
+      <block wx:for="{{market_list}}" wx:for-item="item">
+        <view class="market_container" bindtap="market_address" data-id="{{item.address}}">
+          <view class="market_item">
+            <view style="display: flex;">
+              <view class="market_icon">
+                {{item.city[0]}}
+              </view>
+              <view>
+                <text style="font-weight: bold;">{{item.name}}</text>
+                <view style="display: flex;">
+                  <text>{{item.address}}</text>
+                </view>
+              </view>
+            </view>
+            <van-icon name="location" color="#ff7f50" style="margin:5px; margin-left: 50rpx;" size="30px" />
+          </view>
+        </view>
+        <van-divider />
+      </block>
+
+    </van-popup>
+
+    <van-divider />
+    <!--图片-->
+    <view class="activityAttendance">
+      <view style="display:flex;justify-content: space-between">
+        <view style="font-weight:bold;margin:5px;font-size:18px;">图片/视频</view>
+        <view style="margin:5px;font-size:18px;color:#8C8A8A">
+          <text>更多</text>
+          <van-icon name="arrow" color="#8C8A8A" size="18px" />
+        </view>
+      </view>
+
+      <view style="margin:10px;height: 150px;width:auto; display:flex;justify-content:space-between;">
+        <block wx:if="{{activity_information.activity_img_list}}">
+          <block wx:for="{{activity_information.activity_img_list}}" wx:for-item="item">
+            <view bindtap="previewImg" style="height:120px;width:100px;">
+              <van-image click="previewImg" fit="cover" src="{{item}}" width="100" height="120" />
+            </view>
+          </block>
+        </block>
+      </view>
+    </view>
+    <!--活动人数-->
+    <view class="activityRemark">
+      <text style="margin-left:5px; font-size: large;font-weight: bold;">
+        活动人数
+      </text>
+      <text style="margin-left:5px; font-size: medium; color:#8C8A8A;">
+        参与人数限制：{{activity_information.users_attend_number}}/{{activity_information.users_number}}
+      </text>
+    </view>
+
+    <!--活动奖励-->
+    <view class="activityRemark">
+      <text style="margin-left:15rpx; font-size: large;font-weight: bold;">
+        活动奖品
+      </text>
+      <text style="margin-left:15rpx;color:#8C8A8A;font-size:medium">
+        {{activity_information.prize}}
+      </text>
+
+    </view>
+    <!--活动规则-->
+    <view class="activityRemark">
+      <text style="margin-left:15rpx; font-size: large;font-weight: bold;">
+        活动规则</text>
+      <text style="margin-left:15rpx;color:#8C8A8A;font-size:medium">
+        {{activity_information.rule}}
+      </text>
+    </view>
+    <!--活动描述-->
+    <view class="activityRemark">
+      <text style="margin-left:15rpx; font-size: large;font-weight: bold;">
+        活动描述</text>
+      <text style="margin-left:15rpx;color:#8C8A8A;font-size:medium">
+        {{activity_information.description}}
+      </text>
+    </view>
+    <!--活动描述-->
+    <view class="activityRemark">
+      <text style="margin-left:15rpx; font-size: large;font-weight: bold;">
+        活动形式</text>
+      <text style="margin-left:15rpx;color:#8C8A8A;font-size:medium">
+        {{activity_information.form}}
+      </text>
+    </view>
+  </view>
+  <!--页脚-->
+  <view class="activityFooter" >
+    <view style="margin-left:10px;align-items: center;" >
+      <van-icon name="/static/scocial.png" size="30px" style="margin:5px;" bindtap="activity_result"/>
+      
+    </view>
+    <block wx:if="{{button_style==0}}">
+    <view style="display:flex;align-items: center;justify-content:center;border-radius:20px;height:30px;width:200px;margin:5px;background: linear-gradient(to bottom left, #FBC76A ,#FFDD43);" bindtap='attendActivity'>
+      <text style="color:white;font-weight:bold;font-size:16px;">立即参与</text>
+    </view>
+    </block>
+    <block wx:if="{{button_style==1}}">
+    <view style="display:flex;align-items: center;justify-content:center;border-radius:20px;height:30px;width:200px;margin:5px;background: #909399;" bindtap="finishActivity">
+      <text style="color:white;font-weight:bold;font-size:16px;">已参与，前往完成</text>
+    </view>
+    </block>
+  </view>
+
+  <van-dialog width:200px height:200 use-slot title="标题" show="{{ show }}" show-cancel-button >
+   
+  </van-dialog>
+  <van-dialog id="van-dialog" />
+
+</view>

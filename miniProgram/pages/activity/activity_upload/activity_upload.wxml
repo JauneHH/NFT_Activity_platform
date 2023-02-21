@@ -1,0 +1,142 @@
+<!--pages/activity/activity_upload/activity_upload.wxml-->
+<view class="Container">
+  <!--活动信息-->
+
+  <view class="activtyBox" bindtap="test">
+    <view class="activtyImage">
+      <van-image src="{{img_url}}" width="120" height="140" />
+    </view>
+
+    <view class="activtyInformationList">
+      <view style="font-size:20px;color:#1F1E1D;font-weight:bold;">{{name}}</view>
+      <view style="margin-top: 25%; float: right; border-radius:20px;width: 120rpx;height: 50rpx;text-align: center;background-color: #4C8FF2;color: white;">
+        进行中
+      </view>
+      <view style="color:#B3B3B3;width: auto;">截止时间：
+        {{time}}
+      </view>
+    </view>
+  </view>
+  <!--提交规则-->
+  <view class="ruleBox" style="display: flex;flex-direction: column;">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">提交规则</text>
+    <van-divider />
+    <text style="margin:15rpx; color:#8C8A8A;font-size:medium">1、朋友圈截图（显示地点、显示不分组、原图上传，清晰）
+      2、9宫格至少有一张和店内休息区logo打卡合影；
+      3、30个以上的点赞+显示位置+不分组发布
+    </text>
+
+
+  </view>
+  <!--提交视频-->
+  <view class="mediaBox">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">选择上传的视频</text>
+    <van-divider />
+    <view class="picBox">
+      <block wx:for="{{imgs}}" wx:for-item="item" wx:for-index="bindIndex">
+        <view wx:if="{{item.type=='video'}}" class="pic">
+          <video style="height: 100px;width: 100%;" src="{{item.tempFilePath}}"></video>
+        </view>
+      </block>
+      <view class="picSelect" bindtap="chooseVideo">
+        <van-image width="100%" height="100px" src="/static/images/WeChat9ff7af5431b663030caff767e1ed65cb.png" />
+      </view>
+    </view>
+  </view>
+  <!--提交图片-->
+  <view class="mediaBox">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">选择上传的图片</text>
+    <van-divider />
+    <view class="picBox">
+      <block wx:for="{{imgs}}" wx:for-item="item" wx:for-index="bindIndex">
+        <view wx:if="{{item.type=='image'}}" class="pic">
+          <image style="width: 20px;height: 20px; position: absolute;z-index: 99;" src="/static/delete.png" mode="aspectFill" bindtap="deleteImg" data-index="{{bindIndex}}"></image>
+          <van-image width="100%" height="100px" fit="cover" src="{{item.tempFilePath}}" data-id="{{item.tempFilePath}}" data-index="{{bindIndex}}" bindtap="previewImg">
+          </van-image>
+        </view>
+      </block>
+      <view class="picSelect" bindtap="chooseImg">
+        <van-image width="100%" height="100px" src="/static/images/WeChat9ff7af5431b663030caff767e1ed65cb.png" />
+      </view>
+    </view>
+  </view>
+  <!-- 已经上传的图片/视频-->
+  <view class="mediaBox">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">已经上传的图片/视频</text>
+    <van-divider />
+
+    <block wx:if="{{has_upload_imgs}}">
+      <block wx:if="{{user_activity_status!=2}}">
+        <view class="picBox">
+          <block wx:for="{{has_upload_imgs_type}}" wx:for-item="item" wx:for-index="bindIndex">
+            <block wx:if="{{item.type=='image'}}">
+              <view class="pic" bindtap="previewUploadImg" data-index="{{bindIndex}}">
+                <van-image width="100%" height="100px" fit="cover" src="{{item.url}}" />
+              </view>
+            </block>
+
+            <block wx:elif="{{item.type=='video'}}">
+              <view class="pic">
+                <video style="height: 100px;width: 100%;" src="{{item.url}}"></video>
+              </view>
+            </block>
+          </block>
+        </view>
+      </block>
+
+      <block wx:else>
+        <view class="picBox">
+          <block wx:for="{{imgs}}" wx:for-item="item" wx:for-index="bindIndex">
+            <view wx:if="{{item.type=='image'}}" class="pic" bindtap="previewImg" data-index="{{bindIndex}}">
+              <van-image width="100%" height="100px" fit="cover" src="{{item.tempFilePath}}" />
+            </view>
+            <view wx:if="{{item.type=='video'}}" class="pic">
+              <video style="height: 100%;width: 100px;" src="{{item.tempFilePath}}"></video>
+            </view>
+          </block>
+         
+        </view>
+      </block>
+    </block>
+
+  </view>
+
+
+
+  <!--提交评论-->
+  <view class="commentBox">
+    <text style="margin:15rpx; font-size: large;font-weight: bold;">评论</text>
+    <van-divider />
+    <van-cell-group>
+      <van-field value="{{ comment }}" placeholder="输入评论" type="textarea" autosize bind:change="UploadComment" />
+    </van-cell-group>
+  </view>
+
+  <!--确认弹窗-->
+  <van-dialog width:200px height:200 use-slot title="标题" show="{{ show }}" show-cancel-button confirm-button-open-type="getUserInfo">
+    <van-image width="100px" height="100px" />
+  </van-dialog>
+  <van-dialog id="van-dialog" />
+
+  <!--进度条-->
+  <van-dialog use-slot title="标题" show="{{progress_show}}" show-cancel-button>
+    <van-circle value="{{progress_percent}}" text="{{progress_percent}}%" />
+    
+  </van-dialog>
+
+  <!--提交按钮-->
+
+  <view class="submitBox">
+    <block wx:if="{{user_activity_status==0||user_activity_status==1}}">
+      <van-button bindtap="UploadMedia" color="#F56C6C" round type="none">确认提交</van-button>
+    </block>
+
+    <block wx:elif="{{user_activity_status==2}}">
+      <van-button bindtap="UploadMedia" color="#E6A23C" round type="none">重新提交</van-button>
+    </block>
+    <block wx:elif="{{user_activity_status==3}}">
+      <van-button color="#67C23A" round type="none">审核通过</van-button>
+    </block>
+  </view>
+
+</view>

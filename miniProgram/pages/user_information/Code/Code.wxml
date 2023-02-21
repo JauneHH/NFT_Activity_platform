@@ -1,0 +1,8 @@
+<!--pages/Main/Main.wxml-->
+<text>请点击按钮扫描二维码</text>
+<button bindtap="scanCodeClick">扫描二维码</button>
+
+<view>{{r}}</view>
+<view>{{s}}</view>
+<view>{{c}}</view>
+<view>{{p}}</view>

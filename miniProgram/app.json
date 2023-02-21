@@ -1,0 +1,75 @@
+{
+  "usingComponents": {
+    "van-button": "@vant/weapp/button/index",
+    "van-icon": "@vant/weapp/icon/index",
+    "van-image": "@vant/weapp/image/index",
+    "van-search": "@vant/weapp/search/index",
+    "van-row": "@vant/weapp/row/index",
+    "van-col": "@vant/weapp/col/index",
+    "van-popup": "@vant/weapp/popup/index",
+    "van-uploader": "@vant/weapp/uploader/index",
+    "van-dialog": "@vant/weapp/dialog/index",
+    "van-field": "@vant/weapp/field/index",
+    "van-divider": "@vant/weapp/divider/index",
+    "van-progress": "@vant/weapp/progress/index",
+    "van-circle": "@vant/weapp/circle/index"
+  },
+  "pages": [
+    "pages/user_information/user_information/user_information",
+    "pages/login/login",
+    "pages/NFT/NFT_user/NFT_user",
+    "pages/user_information/upload_NFT/upload_NFT",
+    "pages/index/index",
+   
+    "pages/user_information/Code/Code",
+    "pages/NFT/NFT_information/NFT",
+    "pages/activity/activity_list/activity",
+    "pages/activity/activity_upload/activity_upload",
+    "pages/activity/activity_selectImg/activity_selectImg",
+    "pages/upload/upload",
+    "pages/map/map",
+    "pages/activity/activity_information/activity_information",
+    "pages/user_information/activity_user/activity_user",
+    "pages/NFT/NFT_list/NFT_list",
+    "pages/user_information/user_collect/user_collect",
+    "pages/activity/activity_result/activity_result"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "navigationBarTitleText": "Weixin",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#E8E6E5",
+    "selectedColor": "#212020",
+    "backgroundColor": "#fff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "主页",
+        "iconPath": "/static/home.png",
+        "selectedIconPath": "/static/home-o.png"
+      },
+      
+      {
+        "pagePath": "pages/activity/activity_list/activity",
+        "text": "活动",
+        "iconPath": "static/activity.png",
+        "selectedIconPath": "static/activity-o.png"
+      },
+      {
+        "pagePath": "pages/user_information/user_information/user_information",
+        "text": "个人",
+        "iconPath": "/static/me.png",
+        "selectedIconPath": "static/me-o.png"
+      }
+    ]
+  },
+  "permission": {
+    "scope.userLocation": {
+      "desc": "你的位置信息将用于小程序位置接口的效果展示"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

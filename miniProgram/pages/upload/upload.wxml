@@ -1,0 +1,14 @@
+<form bindsubmit="formSubmit" id='2' bindreset="formReset">  
+  <block wx:for="{{imgs}}" wx:for-item="item">
+        <view class="pic" bindtap="previewImg">
+          
+          <van-image width="100px" height="100px" fit="none" src="{{item}}" />
+        </view>
+      </block>
+  <view class="picSelect" bindtap="chooseImg">
+        <van-image width="100px" height="100px" src="/static/images/WeChat9ff7af5431b663030caff767e1ed65cb.png"   />
+      </view>
+      
+      <button class='btn' bindtap="afterRead">发布</button>  
+      <van-uploader file-list="{{ fileList }}" bind:after-read="afterRead" />
+</form>  

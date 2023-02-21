@@ -1,0 +1,63 @@
+<!--pages/user_information/activity_result/activity_result.wxml-->
+
+<view class="Container">
+  <!--活动信息-->
+  <view class="activtyBox">
+    <view class="activtyImage">
+      <van-image src="{{activity_information.img_url}}" width="120" height="140" />
+    </view>
+
+    <view class="activtyInformationList">
+      <view style="font-size:20px;color:#1F1E1D;font-weight:bold;">{{activity_information.name}}</view>
+      <view style="margin-top: 25%; float: right; border-radius:20px;width: 120rpx;height: 50rpx;text-align: center;background-color: #4C8FF2;color: white;">
+        进行中
+      </view>
+      <view style="color:#B3B3B3;width: auto;">截止时间：
+        {{activity_information.time}}
+      </view>
+    </view>
+  </view>
+  <!--各个用户参与活动的结果-->
+  <block wx:for="{{activity_result}}" wx:for-item="item" wx:for-index="userIndex">
+    <view class="mediaBox" data-index="{{userIndex}}">
+      <view style="display: flex;">
+        <view>
+          <image class="portrait" src="{{item.avatar}}"></image>
+        </view>
+        <view style="display: flex;flex-direction: column;justify-content: space-evenly;">
+          <view>
+            {{item.user_name}}
+          </view>
+          <view style="color: #bbbec2;">
+            {{item.attend_date}}
+          </view>
+        </view>
+      </view>
+      <van-divider />
+      <block wx:if="{{item.comment!=null}}">
+        <view class="commentBox">
+          {{item.comment}}
+        </view>
+      </block>
+
+      <view class="picBox">
+        <block wx:for="{{item.picture_list}}" wx:for-item="picture_item" wx:for-index="pictureIndex">
+          <block wx:if="{{picture_item.type=='image'}}" bindtap="previewImg">
+            <view class="pic">
+              <view bindtap="previewImg" data-picture_url="{{picture_item.url}}" data-index="{{userIndex}}">
+                <van-image width="100%" height="100px" fit="cover" src="{{picture_item.url}}" />
+              </view>
+            </view>
+          </block>
+          <block wx:elif="{{picture_item.type=='video'}}">
+            <view class="pic">
+              <video style="width: 100%;height:100px;object-fit:cover;" mode="widthFix" src="{{picture_item.url}}">
+              </video>
+            </view>
+          </block>
+
+        </block>
+      </view>
+    </view>
+  </block>
+</view>

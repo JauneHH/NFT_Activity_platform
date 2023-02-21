@@ -1,0 +1,52 @@
+/* pages/movie/movie.wxss */
+
+.movie_hit{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 145px;
+  border-radius: 10px;
+  background:grey;
+  border-width: 1px;
+  opacity: 50%;
+  top: 20px;
+  align-items: center;
+  justify-content: space-around;
+}
+ .movie_item{
+  width:  66px;
+  height: 66px;
+  background:greenyellow;
+}
+.movie_upcoming{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 145px;
+  border-radius: 10px;
+  background:grey;
+  border-width: 1px;
+  opacity: 50%;
+  top: 40px;
+  align-items: center;
+  justify-content: space-around;
+}
+.task_box{
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 145px;
+  border-radius: 10px;
+  background:grey;
+  border-width: 1px;
+  opacity: 50%;
+  top: 60px;
+  align-items: center;
+  justify-content: space-around;
+}
+.task_item{
+  width:  25%;
+  height: 100px;
+  background:greenyellow;
+  border-radius: 5px;
+}

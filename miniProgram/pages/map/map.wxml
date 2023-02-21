@@ -1,0 +1,6 @@
+<!--pages/map/map.wxml-->
+<text>pages/map/map.wxml</text>
+<button class='button-function' type='primary' bindtap='chaKan'>查看</button>
+<button class='button-function' type='primary' bindtap='huoQu'>获取</button>
+<button class='button-function' type='primary' bindtap='xuanZe'>选择</button>
+<button class='button-function' type='primary'  bindtap='autoGetLocation'> 逆</button>

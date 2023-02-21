@@ -1,0 +1,114 @@
+/* pages/activity/activity_upload/activity_upload.wxss */
+page{
+  background: #F6F7F8;
+}
+.Container{
+width: 100%;
+height: 100%;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+}
+
+
+.activtyBox{
+  margin: 20rpx;
+  width: 95%;
+  height: 300rpx;
+  display: flex;
+  border-radius: 20rpx;
+  background: white;
+}
+
+.activtyImage{
+  width: auto;
+  height: auto;
+  margin: 20rpx;
+  border-radius: 15rpx;
+}
+
+.activtyInformationList{
+
+  display: flex;
+  flex-direction: column;
+  margin: 20rpx;
+  width: auto;
+  height: auto;
+
+}
+
+.ruleBox{
+  margin:20rpx;
+  padding: 10rpx;
+  width: 95%;
+  height: auto;
+  display: flex;
+  border-radius: 20rpx;
+  background: white;
+}
+
+.mediaBox{
+  margin:20rpx;
+  padding: 10rpx;
+  width: 95%;
+  height: auto;
+  display:block;
+  border-radius: 20rpx;
+  background: white;
+  margin-bottom: 20rpx;
+}
+.commentBox{
+  margin:20rpx;
+  padding: 10rpx;
+  width: 95%;
+  height: auto;
+  display:block;
+  border-radius: 20rpx;
+  background: white;
+  margin-bottom: 120rpx;
+}
+.van-button{
+  font-size: 50px;
+  border-radius: 10px;
+  color:white;
+  height: 70px;
+  width:400rpx;
+  background: #8AD536;
+}
+
+
+/* pages/activity/activity_upload/activity_upload.wxss */
+
+
+
+.submitBox{
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  display: flex;
+  bottom: 0%;
+  width: 100%;
+  height: 100rpx;
+  opacity: 100;
+  background:  #F6F7F8;
+}
+.picBox{
+  display: flex;
+  width: 100%;
+  height: auto;
+  flex-wrap: wrap;
+}
+.picSelect{
+  width: 100px;
+  height: 100px;
+  margin:10px;
+  
+}
+.pic{
+  width: 100px;
+  height: 100px;
+  margin:10px;
+}
+
+

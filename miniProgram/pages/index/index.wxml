@@ -1,0 +1,38 @@
+<view class="Container">
+
+  <van-search value="{{ value }}" label="搜索" placeholder="请输入搜索关键词" use-action-slot bind:change="onChange" bind:search="onSearch">
+    <view slot="action" style="display: flex;align-items: center;">
+      <van-icon size='40rpx' name="/static/QRcode.png" bind:click="scanCodeClick" />
+    </view>
+  </van-search>
+
+  <view>
+    
+    <swiper class="head" indicator-dots='true' autoplay='true' interval='4000'>
+      <block wx:for='{{imgs}}' wx:key='imgs' wx:for-item="item">
+        <swiper-item>
+          <van-image fit='cover' radius='20rpx' width='100%' height='100%' src="{{item}}"></van-image>
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+  <!--
+  <image style="height:100vh;width: 100vh;object-fit:cover;" src="/static/year.gif"></image>
+-->
+</view>
+
+
+<block wx:if="{{NFT_exist==1}}">
+  <van-dialog use-slot title="该NFT您已领取" show="{{ show }}" confirm-button-open-type="onClose" bind:close="onClose" bind>
+    <image src="{{NFT_img_url}}" style="object-fit:cover;" />
+
+    <text>{{NFT_name}}</text>
+  </van-dialog>
+</block>
+<block wx:else="{{NFT_exist!=1}}">
+  <van-dialog use-slot title="你的专属NFT" show="{{ show }}" confirm-button-open-type="onClose" bind:confirm='NFT_name' bind:close="onClose">
+    <image src="{{NFT_img_url}}" style="object-fit:cover;" />
+    <van-divider />
+    <van-field label="名称" value="{{ value }}" placeholder="为你的NFT取个名字吧" bind:change="onChange" />
+  </van-dialog>
+</block>
