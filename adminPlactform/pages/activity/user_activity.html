@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./index.css"/>
+    <link rel="stylesheet" href="../../css/mqpages.css"/>
+    <script src="../../js/mqpages.js"></script>
+    <script src="../../lib/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/jquery-3.4.1/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/element2.13.0/lib-master/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/layer/layer.js"></script>
+    <script src="../../lib/axios/dist/axios.js"></script>
+    <title>Title</title>
+</head>
+<body>
+<div id="app2">
+<el-table
+        :data="userData"
+        border
+        show-summary
+        style="width: 100%">
+    <el-table-column
+            prop="id"
+            label="ID"
+            width="180">
+    </el-table-column>
+    <el-table-column
+            prop="name"
+            label="姓名">
+    </el-table-column>
+    <el-table-column
+            prop="amount1"
+            sortable
+            label="数值 1">
+    </el-table-column>
+    <el-table-column
+            prop="amount2"
+            sortable
+            label="数值 2">
+    </el-table-column>
+    <el-table-column
+            prop="amount3"
+            sortable
+            label="数值 3">
+    </el-table-column>
+</el-table>
+</div>
+</body>
+</html>
