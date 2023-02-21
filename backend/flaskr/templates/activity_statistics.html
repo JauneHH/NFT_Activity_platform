@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <frame-options policy="SAMEORIGIN"/>
+    <meta charset="utf-8">
+    <title>活动列表</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+
+</head>
+<body>
+
+<div id="app">
+    <div v-show="show">
+        <template>
+
+            <el-table
+
+                    :cell-style="cellStyle"
+                    :row-class-name="tableRowClassName"
+                    style="width: 100%"
+                    :cell-style="cellStyle"
+                    :data="tableActivity.filter(data => !search || data.activity_name.toLowerCase().includes(search.toLowerCase()))"
+            >
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="活动名称">
+                                <span>[[ props.row.activity_name ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动海报:">
+                                <span>
+                                    <el-image
+                                            style="width: 100px; height: 100px"
+                                            :src="props.row.img_url"
+                                            :fit="cover"></el-image>
+
+                                </span>
+                            </el-form-item>
+                            <el-form-item label="活动时间:">
+                                <span>[[ props.row.activity_time ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动地址:">
+                                <span>[[ props.row.activity_area ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动类型:">
+                                <span>[[ props.row.activity_type ]]</span>
+                            </el-form-item>
+
+                            <el-form-item label="活动状态:">
+                                <span>[[ props.row.activity_status ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动人数:">
+                                <span>[[ props.row.activity_users_number ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动奖励:">
+                                <span>[[props.row.activity_prize ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动规则:">
+                                <span>[[ props.row.activity_rule ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动描述:">
+                                <span>[[ props.row.activity_description ]]</span>
+                            </el-form-item>
+                            <el-form-item label="活动形式:">
+                                <span>[[ props.row.activity_form ]]</span>
+                            </el-form-item>
+
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="activity_name"
+                        label="活动名"
+                        width="120">
+                </el-table-column>
+                 <el-table-column
+                        prop="activity_time"
+                        label="开始时间"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="activity_end_time"
+                        label="结束时间"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="activity_area"
+                        label="地址"
+                        width="150">
+                </el-table-column>
+
+                <el-table-column
+                        prop="activity_type"
+                        sortable
+                        label="活动类型"
+                        width="100">
+                </el-table-column>
+
+                <el-table-column
+                        prop="activity_status"
+                        sortable
+                        label="状态"
+                        width="100">
+                </el-table-column>
+                <el-table-column label="活动参与情况">
+                    <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="search"
+                                size="mini"
+                                placeholder="输入活动名称关键字搜索"/>
+                    </template>
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">查看
+                        </el-button>
+
+                    </template>
+                </el-table-column>
+
+            </el-table>
+            <div class="block">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="1"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="10"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="tableActivity.length">
+                </el-pagination>
+            </div>
+
+        </template>
+    </div>
+
+    <div style="float:left;position: absolute;top: 50px;left: 50px;z-index: 999">
+        <el-card v-show="cardShow" class="box-card">
+            <div slot="header" class="clearfix">
+                <span>参与活动的用户信息</span>
+                <el-button style="float: right; padding: 3px 0" @click="hidden" type="text">关闭</el-button>
+            </div>
+            <div v-for="o in 1" :key="o" class="text item">
+
+                <iframe :src="statistics_url" frameborder="0" scrolling="yes" width="1000px" height="500"
+                >
+                </iframe>
+            </div>
+        </el-card>
+    </div>
+</div>
+
+</body>
+<style>
+
+    .el-table .warning-row {
+        background: #f4f4f5;
+
+    }
+
+    .el-table .success-row {
+        background: #ecf4e8;
+
+    }
+    .el-table .pause-row {
+        background: #fdf6ec;
+
+    }
+        .el-table .end-row {
+        background: #fef0f0;
+
+    }
+    .demo-table-expand {
+        font-size: 0;
+    }
+
+    .demo-table-expand label {
+        width: 90px;
+        color: #99a9bf;
+    }
+
+    .demo-table-expand .el-form-item {
+        margin-right: 0;
+        margin-bottom: 0;
+        width: 50%;
+    }
+
+    .text {
+        font-size: 14px;
+    }
+
+    .item {
+        margin-bottom: 18px;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+    }
+
+    .clearfix:after {
+        clear: both
+    }
+
+    .box-card {
+        width: auto;
+    }
+</style>
+
+<script src="./../static-vue/js/FileSaver.js"></script>
+<script src="./../static-vue/js/jquery-3.5.1.min.js"></script>
+<script src="./../static-vue/js/jquery.table2excel.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./../static-vue/lib/vue/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+            el: "#app",
+
+            delimiters: ['[[', ']]'],
+            el: "#app",
+            data: {
+                show: true,
+                showUser: false,
+                cardShow: false,
+                search: '',
+                tableActivity: '[]',
+                tableUser: '[]',
+                static_url: 'activity_statistics_item?activity_id=',
+                statistics_url: '',
+            },
+
+            methods: {
+                cellStyle({row, column, rowIndex, columnIndex}) {
+                if (row.activity_status == "进行中") {
+                    if (columnIndex == 6) {
+
+                        return 'font-weight:bold;color:#67C23A'
+                    }
+                } else if(row.activity_status == "已结束")  {
+                    if (columnIndex == 6) {
+
+                        return 'font-weight:bold;color:#F56C6C'
+                    }
+                }else if(row.activity_status == "未开始")  {
+                    if (columnIndex == 6) {
+
+                        return 'font-weight:bold;color:#909399'
+                    }
+                }else if(row.activity_status == "已暂停")  {
+                    if (columnIndex == 6) {
+
+                        return 'font-weight:bold;color:#E6A23C'
+                    }
+                }
+            },
+                tableRowClassName({row, rowIndex}) {
+
+                if (row.activity_status == "进行中") {
+                    return 'success-row';
+                } else if (row.activity_status == "已结束") {
+                    return 'end-row';
+                }else if (row.activity_status == "未开始") {
+                    return 'warning-row';
+                }else if (row.activity_status == "已暂停") {
+                    return 'pause-row';
+                }
+                return '';
+            },
+                handleEdit(index, row) {
+                    console.log(row["id"]);
+                    console.log(index, row);
+                    this.cardShow = !this.cardShow
+                    this.statistics_url = this.static_url + row["activity_id"];
+                    console.log(this.statistics_url);
+
+                },
+
+            handleSizeChange(val) {
+                console.log(`每页 ${val} 条`);
+            },
+            handleCurrentChange(val) {
+                console.log(`当前页: ${val}`);
+            },
+             hidden() {
+                this.user_activity_url = 'null'
+                this.cardShow = !this.cardShow
+            },
+            getActivityList() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: 'api/manager/activity_list',
+                    headers: {'Content-Type': 'multipart/form-data'},
+                    onUploadProgress: function (progressEvent) {
+                        console.log(progressEvent, '236')
+                    },
+                })
+                    .then(function (ret) {
+                        console.log(ret.data['msg'])
+                        that.tableActivity = ret.data['msg']
+                        console.log(that.tableActivity)
+                        for (let item in that.tableActivity) {
+                           if (that.tableActivity[item]["activity_status"] == 0) {
+                                that.tableActivity[item]["activity_status"] = "未开始"
+                            } else if (that.tableActivity[item]["activity_status"] == 1) {
+                                that.tableActivity[item]["activity_status"] = "进行中"
+                            } else if(that.tableActivity[item]["activity_status"] == 2){
+                                that.tableActivity[item]["activity_status"] = "已结束"
+                            } else if(that.tableActivity[item]["activity_status"] == 3){
+                                that.tableActivity[item]["activity_status"] = "已暂停"
+                            }
+                        }
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+
+            },
+
+        },
+        mounted()
+    {
+        this.getActivityList()
+    }
+
+    })
+</script>
+</html>

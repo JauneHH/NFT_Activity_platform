@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>活动列表</title>
+    <link rel="stylesheet" href="./index.css"/>
+    <link rel="stylesheet" href="../../css/mqpages.css"/>
+    <script src="../../js/mqpages.js"></script>
+    <script src="../../lib/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/jquery-3.4.1/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/element2.13.0/lib-master/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/layer/layer.js"></script>
+    <script src="../../lib/axios/dist/axios.js"></script>
+
+
+</head>
+<body>
+
+<div id="app">
+    <div v-show="show">
+        <template>
+            <el-table
+                    :cell-style="cellStyle"
+                    :default-sort="{prop: 'id'}"
+                    :row-class-name="tableRowClassName"
+                    :data="tableData.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+                    height="500"
+                    style="width: 100%">
+                <el-table-column fixed type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="活动名称:">
+                                <span>{{ props.row.name }}</span>
+                            </el-form-item>
+
+                            <el-form-item label="活动时间:">
+                                <span>{{ props.row.datetime }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动地址:">
+                                <span>{{ props.row.address }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动类型:">
+                                <span>{{ props.row.type }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动人数:">
+                                <span>{{ props.row.number }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动奖品:">
+                                <span>{{ props.row.prize }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动规则:">
+                                <span>{{ props.row.rule }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动详情:">
+                                <span>{{ props.row.desc }}</span>
+                            </el-form-item>
+                        </el-form>
+                    </template>
+                </el-table-column>
+
+                <el-table-column
+                        prop="id"
+                        fixed
+                        sortable
+                        label="序号"
+                >
+                    <template slot="extra">
+                        <el-result icon="success" title="成功提示" subTitle="请根据提示进行操作">
+                        </el-result>
+                        <el-button type="primary" size="medium">返回</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="name"
+                        label="活动名"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="datetime"
+                        label="日期"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="address"
+                        label="地址"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+
+                        prop="status"
+                        sortable
+                        label="状态"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        fixed="right"
+                        align="left">
+                    <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="search"
+                                size="mini"
+                                placeholder="输入关键字搜索"/>
+                    </template>
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="handleEdit(scope.$index, scope.row)">查看
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="handleDelete(scope.$index, scope.row)">删除
+                        </el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+
+            <el-table
+                    :data="tableActivity"
+                    :cell-style="cellStyle"
+                    :row-class-name="tableRowClassName"
+                    style="width: 100%"
+                    :cell-style="cellStyle"
+            >
+                <el-table-column type="expand">
+                    <template slot-scope="props">
+                        <el-form label-position="left" inline class="demo-table-expand">
+                            <el-form-item label="活动名称">
+                                <span>{{ props.row.activity_name }}</span>
+                            </el-form-item>
+
+                            <el-form-item label="活动时间:">
+                                <span>{{ props.row.activity_time }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动地址:">
+                                <span>{{ props.row.activity_area }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动类型:">
+                                <span>{{ props.row.activity_type }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动海报:">
+                                <span>{{ props.row.img_url }}</span>
+                            </el-form-item>
+                            <el-form-item label="活动状态:">
+                                <span>{{ props.row.activity_status }}</span>
+                            </el-form-item>
+
+
+                        </el-form>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="activity_name"
+                        label="活动名"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="activity_time"
+                        label="日期"
+                        width="180">
+                </el-table-column>
+                <el-table-column
+                        prop="activity_area"
+                        label="地址"
+                        width="180">
+                </el-table-column>
+                <el-table-column  label="操作">
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="get_activity_user(scope.$index, scope.row)">编辑</el-button>
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="handleDelete(scope.$index, scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+                <el-table-column
+                        prop="activity_type"
+                        sortable
+                        label="活动类型"
+                        width="180">
+                </el-table-column>
+
+                <el-table-column
+                        prop="activity_status"
+                        sortable
+                        label="状态"
+                        width="180">
+                </el-table-column>
+
+            </el-table>
+            <div class="block">
+                <el-pagination
+                        @size-change="handleSizeChange"
+                        @current-change="handleCurrentChange"
+                        :current-page="1"
+                        :page-sizes="[10, 20, 30, 40]"
+                        :page-size="10"
+                        layout="total, sizes, prev, pager, next, jumper"
+                        :total="tableData.length">
+                </el-pagination>
+            </div>
+
+        </template>
+    </div>
+
+    <div style="float:left;position: absolute;top: 50px;left: 50px;z-index: 999">
+        <el-card v-show="cardShow" class="box-card">
+            <div slot="header" class="clearfix">
+                <span>参与活动的用户信息</span>
+                <el-button style="float: right; padding: 3px 0" @click="hidden" type="text">关闭</el-button>
+            </div>
+            <div v-for="o in 1" :key="o" class="text item">
+
+                <iframe :src="user_activity_url" frameborder="0" scrolling="yes" width="1000px" height="500"
+                >
+                </iframe>
+            </div>
+        </el-card>
+    </div>
+</div>
+
+</body>
+
+<script src="./index.js"></script>
+</html>

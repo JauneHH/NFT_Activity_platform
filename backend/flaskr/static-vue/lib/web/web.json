@@ -1,0 +1,43 @@
+{
+	"name": "ip小程序后台管理",
+	"author":"hhhhzx",
+	"version": "1.0.0",
+	"userActivity": [{
+		"test": "hhhh"
+	}],
+	"webInfo": {
+		"bg":"#545c64",
+		"textColor": "#fff",
+		"textColorActive": "#ffd04b"
+	},
+	"activeIndex":0,
+	"navs_left":[
+
+		{
+			"title": "数据统计",
+			"icon": "el-icon-goods",
+			"href": "pages/activity_statistic/activity.html",
+			"id": "5"
+		}
+	] ,
+	"navs": [
+		{
+			"title": "活动统计",
+			"icon": "el-icon-s-platform",
+			"href": "pages/activity/activity.html",
+			"id": "2"
+		},
+	{
+		"title": "发布活动",
+		"icon": "el-icon-goods",
+		"href": "pages/publishActivity/index.html",
+		"id": "4"
+	},  {
+		"title": "数据统计",
+		"icon": "el-icon-goods",
+		"href": "pages/activity_statistic/activity.html",
+		"id": "5"
+	}
+
+	]
+}

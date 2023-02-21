@@ -1,0 +1,185 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- import CSS -->
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 引入组件库 -->
+    <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+    <!--
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="//cdn.rawgit.com/rainabba/jquery-table2excel/1.1.0/dist/jquery.table2excel.min.js"></script>
+    -->
+    <script src="../static-vue/js/jquery-3.5.1.min.js"></script>
+    <script src="../static-vue/js/jquery.table2excel.js"></script>
+
+</head>
+<body>
+
+<div id="app">
+    <el-container style="height: 100%; border: 1px solid #eee">
+        <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
+            <el-menu default-active="1"
+                     class="el-menu-vertical-demo"
+            >
+                <el-menu-item index="1" @click="test">
+                    <i class="el-icon-location"></i>
+                    <span slot="title">活动管理</span>
+                </el-menu-item>
+                <el-menu-item @click="test" index="2">
+                    <i class="el-icon-menu"></i>
+                    <span slot="title">发布活动</span>
+                </el-menu-item>
+                <el-menu-item @click="test" index="3">
+                    <i class="el-icon-document"></i>
+                    <span slot="title">用户权限</span>
+                </el-menu-item>
+                <el-menu-item @click="test" index="4">
+                    <i class="el-icon-s-operation"></i>
+                    <span slot="title">活动统计</span>
+                </el-menu-item>
+                <el-menu-item @click="test" index="5">
+                    <i class="el-icon-present"></i>
+                    <span slot="title">奖品发放</span>
+                </el-menu-item>
+                <el-menu-item @click="test" index="6">
+                    <i class="el-icon-present"></i>
+                    <span slot="title" >NFT发放</span>
+                </el-menu-item>
+                <el-menu-item index="7">
+                    <i class="el-icon-present"></i>
+                    <a href="https://mpkf.weixin.qq.com/kf/home" target='_blank' >客服对话</a>
+                </el-menu-item>
+            </el-menu>
+        </el-aside>
+
+        <el-container>
+            <iframe :src="src" frameborder="0" scrolling="yes" width="100%" height="100%"
+                    security="restricted"sandbox="allow-scripts allow-same-origin allow-popups allow-modals allow-downloads">
+
+            </iframe>
+
+        </el-container>
+    </el-container>
+
+</div>
+</body>
+
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<script src="./../static-vue/js/FileSaver.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./../static-vue/lib/vue/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+
+
+<style>
+    .el-header {
+        background-color: #B3C0D1;
+        color: #333;
+        line-height: 60px;
+    }
+
+    .el-aside {
+        color: #333;
+    }
+</style>
+<script>
+    jQuery(document).ready(function() {
+    $('#export-btn').on('click', function(e){
+        $("#estTbl").table2excel({
+            exclude: ".noExl",
+            name: "Data",
+            filename: "tblExport.xlsx",
+        });
+    });
+});
+</script>
+<script>
+document.body.onbeforeunload = function (event) {
+    console.log('onbeforeunload')
+            var rel = "asdfawfewf";
+            if (!window.event) {
+               event.returnValue = rel;
+           } else {
+               window.event.returnValue = rel;
+            }
+        };
+    new Vue({
+        el: "#app",
+        mounted() {
+
+        },
+        delimiters: ['[[', ']]'],
+        data() {
+            const item = {
+                date: '2016-05-02',
+                name: '王小虎',
+                address: '上海市普陀区金沙江路 1518 弄'
+            };
+            return {
+                src: 'activity',
+                id: 1,
+                tableData: Array(20).fill(item),
+                fileList: [{
+                    name: 'food.jpeg',
+                    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+                }, {
+                    name: 'food2.jpeg',
+                    url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+                }]
+
+            }
+        },
+        methods: {
+            test(res) {
+                let that = this
+                console.log(res.index)
+                that.id = res.index
+                if (res.index == 1) {
+                    that.src = 'activity'
+                } else if (res.index == 2) {
+                    that.src = 'publish_activity'
+                } else if (res.index == 3) {
+                    that.src = 'user'
+                } else if (res.index == 4) {
+                    that.src = 'activity_statistics'
+                } else if (res.index == 5) {
+                    that.src = 'user_prize'
+                } else if (res.index == 6) {
+                    console.log('NFT')
+                    that.src = 'NFT'
+                }
+
+                document.body.onbeforeunload = function (event) {
+                    console.log(rel)
+                    var rel = "asdfawfewf";
+                    if (!window.event) {
+                        event.returnValue = rel;
+                    } else {
+                        window.event.returnValue = rel;
+                    }
+                };
+
+                console.log('test', this.id)
+            },
+            handleRemove(file, fileList) {
+                console.log(file, fileList);
+            },
+            handlePreview(file) {
+                console.log(file);
+            },
+            handleExceed(files, fileList) {
+                this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
+            },
+            beforeRemove(file, fileList) {
+                return this.$confirm(`确定移除 ${file.name}？`);
+            }
+
+        }
+
+    })
+
+</script>
+</html>

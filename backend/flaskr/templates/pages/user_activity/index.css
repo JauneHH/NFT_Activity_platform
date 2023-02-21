@@ -1,0 +1,25 @@
+
+.el-table .warning-row {
+    background: oldlace;
+
+}
+
+.el-table .success-row {
+    background: #f0f9eb;
+
+}
+.img-container{
+    margin-top: 20px;
+    display: flex;
+
+    width:100%;
+    height: auto;
+}
+.box {
+    padding:50px;
+    margin:auto;
+    width:520px;
+    border:1px solid gray;
+    border-radius:2px;
+}
+

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+    <template>
+        <el-table
+                ref="filterTable"
+                :data="tableUser.filter(data => !search || data.alias.toLowerCase().includes(search.toLowerCase()))"
+                border
+                :cell-style="cellStyle"
+                style="width: 100%; margin-top: 20px"
+                @expand-change="expendChange"
+        >
+
+            <el-table-column
+                    prop="user_id"
+                    label="ID"
+                    width="80">
+            </el-table-column>
+            <el-table-column
+                    prop="alias"
+                    label="昵称"
+                    width="100">
+
+            </el-table-column>
+            <el-table-column
+                    prop="img_url"
+                    label="头像"
+                    width="120">
+                <template slot-scope="props">
+                    <el-image
+                            style="width: 100px; height: 100px"
+                            :src="props.row.img_url"
+                            :fit="fit"></el-image>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="comment"
+                    label="评论"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="user_activity_status"
+                    label="提交状态"
+
+                    :filters="[{text: '待审核', value: '待审核'}, {text: '待上传结果', value: '待上传结果'}, {text: '审核失败', value: '审核失败'}, {text: '审核通过', value: '审核通过'}]"
+                    :filter-method="filterHandler"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="production_rate"
+                    label="活动评分"
+                    width="150">
+                <template slot-scope="scope">
+                    <el-rate
+                            :value="[[scope.row.production_rate]]"
+                            disabled
+                            text-color="#ff9900"
+                    >
+                    </el-rate>
+                    <el-rate
+                            :value="[[scope.row.booth_rate]]"
+                            disabled
+                            text-color="#ff9900"
+                    >
+                    </el-rate>
+                    <el-rate
+                            :value="[[scope.row.service_rate]]"
+                            disabled
+                            text-color="#ff9900"
+                    >
+                    </el-rate>
+                    <el-rate
+                            :value="[[scope.row.activity_rate]]"
+                            disabled
+                            text-color="#ff9900"
+                    >
+                    </el-rate>
+                </template>
+            </el-table-column>
+            <el-table-column label="查看上传结果" width="110" type="expand">
+                <template slot-scope="scope">
+                    <div class="demo-image__preview">
+                        <div style="margin-top: 20px">
+                            <el-form>
+                                <el-form-item label="用户评论:">
+                                    [[ scope.row.comment]]
+
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                        <el-form label-position="top">
+                            <div>
+                                用户上传的图片/视频
+                            </div>
+                            <div style="display: flex;flex-direction: row;width:100%;flex-wrap: wrap">
+
+                                <el-image v-for="Url in scope.row.img_list"
+                                          style="width: 200px; height: 200px;margin: 20px"
+                                          :src="Url"
+                                          :preview-src-list="scope.row.img_list">
+                                </el-image>
+                                <video v-for="Url in scope.row.video_list"
+                                       controls autoplay
+                                       style="width: 200px; height: 200px;margin: 20px"
+                                       :src="Url">
+
+                                </video>
+
+                            </div>
+
+
+                            <div style="margin-left: 20px">
+                                <el-button type="primary" @click="BatchDownload(scope.$index, scope.row)">全部下载
+                                </el-button>
+
+                            </div>
+
+                            </el-form-item>
+                        </el-form>
+                        <div style="margin-top: 20px">
+                            <el-form>
+                                <el-form-item label="平台反馈信息:">
+
+                                    [[ scope.row.feedback_message]]
+
+
+                                </el-form-item>
+                            </el-form>
+                        </div>
+
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    align="left">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入用户昵称关键字搜索"/>
+                </template>
+                <template slot-scope="scope">
+                    <el-button
+                            @click="dialog(scope.$index, scope.row,1)"
+                            size="mini"
+                            type="danger"
+                    >审核通过
+                    </el-button>
+                    <el-button
+                            @click="dialog(scope.$index, scope.row,0)"
+                            size="mini"
+
+                    >审核失败
+                    </el-button>
+                </template>
+            </el-table-column>
+
+        </el-table>
+    </template>
+    <el-dialog
+            title="审核通过，反馈信息"
+            :visible.sync="dialogVisible_success"
+            width="50%"
+    >
+        <span>平台反馈信息</span>
+        <el-select v-model="feedback_message" filterable placeholder="请选择/输入">
+            <el-option
+                    v-for="item in options_success"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
+        <span slot="footer" class="dialog-footer">
+
+    <el-button @click="dialogVisible_success = false">取 消</el-button>
+    <el-button type="primary" @click="dialog_activity_user_result_success">确 定</el-button>
+  </span>
+    </el-dialog>
+
+    <el-dialog
+            title="审核失败,失败原因："
+            :visible.sync="dialogVisible_fail"
+            width="30%"
+    >
+
+        <el-select v-model="feedback_message" filterable placeholder="请选择/输入">
+            <el-option
+                    v-for="item in options_fail"
+                    type="textarea"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value">
+            </el-option>
+        </el-select>
+        <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible_fail = false">取 消</el-button>
+    <el-button type="primary" @click="dialog_activity_user_result_fail">确 定</el-button>
+  </span>
+    </el-dialog>
+</div>
+</body>
+</html>
+<style>
+
+    .el-table .warning-row {
+        background: oldlace;
+
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+
+    }
+
+    .img-container {
+        margin-top: 20px;
+        display: flex;
+
+        width: 100%;
+        height: auto;
+    }
+
+    .box {
+        padding: 50px;
+        margin: auto;
+        width: 520px;
+        border: 1px solid gray;
+        border-radius: 2px;
+    }
+
+</style>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./../static-vue/lib/vue/vue.js"></script>
+<script src="./../static-vue/js/FileSaver.js"></script>
+<script src="./../static-vue/js/jquery-3.5.1.min.js"></script>
+<script src="http://stuk.github.io/jszip/test/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="https://stuk.github.io/jszip/dist/jszip.js"></script>
+<script type="text/javascript" src="http://stuk.github.io/jszip/vendor/FileSaver.js"></script>
+<!--<script src="https://cdn.bootcdn.net/ajax/libs/jszip/3.3.0/jszip.js"></script>-->
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+
+
+    new Vue({
+        user_id: '',
+        delimiters: ['[[', ']]'],
+        el: "#app",
+        data: {
+            iconClasses: ['icon-rate-face-1', 'icon-rate-face-2', 'icon-rate-face-3'],
+
+            options_success: [{
+                value: '审核通过，谢谢参与',
+                label: '审核通过，谢谢参与'
+            },],
+            options_fail: [{
+                value: '抱歉审核未通过，请重新提交',
+                label: '抱歉审核未通过，请重新提交'
+            },],
+            ticket_options: [
+                {
+                    value: '猫眼兑换券',
+                    label: '猫眼兑换券'
+                }, {
+                    value: '万达兑换券',
+                    label: '万达兑换券'
+                }
+            ],
+            search: '',
+            feedback_message: '',
+            ticket_name: '',
+            exchange_code: '',
+            dialogVisible_success: false,
+            dialogVisible_fail: false,
+            mp3arr: ["https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg", "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg", "https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg"],
+
+            url: 'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
+            srcList: [
+                'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
+                'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg'
+            ],
+            user_upload_img: [],
+            form: {
+
+                url_list: ["../../img/bg1.jpg", "../../img/head.jpg", "../../img/bg2.jpg"],
+                url_list_select: [],
+            },
+            activity_id: '',
+            tableUser: [],
+        },
+
+        mounted() {
+            this.activity_user_list()
+        },
+        methods: {
+            filterHandler(value, row, column) {
+                const property = column['property'];
+                return row[property] === value;
+            },
+            cellStyle({row, column, rowIndex, columnIndex}) {
+                if (row.user_activity_status == "待上传结果") {
+                    if (columnIndex == 4) {
+
+                        return 'font-weight:bold;color:#909399'
+                    }
+                } else if (row.user_activity_status == "待审核") {
+                    if (columnIndex == 4) {
+
+                        return 'font-weight:bold;color:#E6A23C'
+                    }
+                } else if (row.user_activity_status == "审核未通过") {
+                    if (columnIndex == 4) {
+
+                        return 'font-weight:bold;color:#F56C6C'
+                    }
+                } else if (row.user_activity_status == "审核通过") {
+                    if (columnIndex == 4) {
+
+                        return 'font-weight:bold;color:#67C23A'
+                    }
+                }
+            },
+            activity_user_list: function () {
+
+                let url = location.search; //这一条语句获取了包括问号开始到参数的最后，不包括前面的路径
+                let params = url.substr(1);//去掉问号
+                let pa = params.split("&");
+                let s = new Object();
+                console.log(s)
+
+                for (let i = 0; i < pa.length; i++) {
+                    s[pa[i].split("=")[0]] = unescape(pa[i].split("=")[1]);
+                }
+                this.activity_id = s.activity_id
+
+                console.log(this.activity_id)
+                let that = this
+                axios({
+                    method: 'post',
+                    url: 'api/manager/activity_user_list',
+                    data: this.activity_id,
+                    headers: {'Content-Type': 'multipart/form-data'},
+
+                })
+                    .then(function (ret) {
+                        console.log(ret)
+                        that.tableUser = ret.data['msg']
+
+                        for (let item in that.tableUser) {
+                            if (that.tableUser[item]["user_activity_status"] == 0) {
+                                that.tableUser[item]["user_activity_status"] = "待上传结果"
+                            } else if (that.tableUser[item]["user_activity_status"] == 1) {
+                                that.tableUser[item]["user_activity_status"] = "待审核"
+                            } else if (that.tableUser[item]["user_activity_status"] == 2) {
+                                that.tableUser[item]["user_activity_status"] = "审核未通过"
+                            } else if (that.tableUser[item]["user_activity_status"] == 3 || that.tableUser[item]["user_activity_status"] == 4) {
+                                that.tableUser[item]["user_activity_status"] = "审核通过"
+                            }
+
+                        }
+                        for (item in that.tableUser)
+                            console.log(that.tableUser[item])
+                        console.log(that.tableUser, '281')
+                        let tableUser = that.tableUser
+
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            },
+            dialog(index, row, flag) {
+                if (flag == 1)
+                    this.dialogVisible_success = true
+                else if (flag == 0)
+                    this.dialogVisible_fail = true
+                this.user_id = row['user_id']
+            },
+            //审核通过
+            dialog_activity_user_result_success() {
+
+                let param = new FormData()
+
+                param.append('user_id', this.user_id)
+                param.append('activity_id', this.activity_id)
+                param.append('result', 1)
+                param.append('feedback_message', this.feedback_message)
+                param.append('ticket_name', this.ticket_name)
+
+                param.append('exchange_code', this.exchange_code)
+                axios({
+                    method: 'post',
+                    url: 'api/manager/activity_user_status',
+                    data: param,
+                    headers: {'Content-Type': 'multipart/form-data'},
+
+                })
+                    .then(function (ret) {
+                        console.log(ret)
+                        alert('提交成功!');
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                        alert('提交成功!');
+                    })
+                this.dialogVisible_success = false
+                setTimeout(function () {
+                    location.reload()
+                }, 1000);
+            },
+            //审核失败
+            dialog_activity_user_result_fail() {
+
+                let param = new FormData()
+
+                param.append('user_id', this.user_id)
+                param.append('activity_id', this.activity_id)
+                param.append('result', 0)
+                param.append('feedback_message', this.feedback_message)
+                axios({
+                    method: 'post',
+                    url: 'api/manager/activity_user_status',
+                    data: param,
+                    headers: {'Content-Type': 'multipart/form-data'},
+
+                })
+                    .then(function (ret) {
+                        console.log(ret)
+                        alert('提交成功!');
+                        setTimeout(function () {
+                            location.reload()
+                        }, 1000);
+
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                        alert('提交失败!');
+                    })
+                this.dialogVisible_fail = false
+                setTimeout(function () {
+                    location.reload()
+                }, 1000);
+            },
+
+            activity_user_upload_result(index, row) {
+                console.log(index, row)
+                let param = new FormData()
+                param.append('user_id', row["user_id"])
+                param.append('activity_id', this.activity_id)
+                axios({
+                    method: 'post',
+                    url: 'api/manager/activity_user_uploadInformation',
+                    data: param,
+                    headers: {'Content-Type': 'multipart/form-data'},
+
+                })
+                    .then(function (ret) {
+                        console.log(ret)
+                        let that = this
+                        that.user_upload_imgs = ret.data['img_list']
+                        console.log(this.user_upload_imgs)
+
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+            },
+
+            //展开信息
+            expendChange(row, expandedRows, index) {
+                console.log(row, expandedRows, index)
+                let param = new FormData()
+                let that = this
+                param.append('user_id', row["user_id"])
+                param.append('activity_id', this.activity_id)
+
+            },
+            download(name, href) {
+                var a = document.createElement("a"), //创建a标签
+                    e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+                e.initEvent("click", false, false); //初始化事件对象
+                a.href = href; //设置下载地址
+                a.download = name; //设置下载文件名
+                a.dispatchEvent(e); //给指定的元素，执行事件click事件
+            },
+            //下载表单图片
+            onSubmit(index, row) {
+                var that = this;
+                console.log(index, row)
+                console.log('submit!');
+                console.log(this.tableUser)
+
+                for (let index = 0; index < row.img_list.length; index++) {
+                    console.log(row.img_list[index])
+                    var a = document.createElement("a"), //创建a标签
+                        e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+                    e.initEvent("click", false, false); //初始化事件对象
+                    a.href = row.img_list[index]; //设置下载地址
+                    a.download = '第' + index + '张图片'; //设置下载文件名
+                    a.dispatchEvent(e); //给指定的元素，执行事件click事件
+
+                }
+                for (let index = 0; index < row.video_list.length; index++) {
+                    console.log(row.video_list[index])
+                    var a = document.createElement("a"), //创建a标签
+                        e = document.createEvent("MouseEvents"); //创建鼠标事件对象
+                    e.initEvent("click", false, false); //初始化事件对象
+                    a.href = row.video_list[index]; //设置下载地址
+                    a.download = '第' + index + '个视频'; //设置下载文件名
+                    a.dispatchEvent(e); //给指定的元素，执行事件click事件
+
+                }
+            },
+
+            getBase64Image(img) {
+                let canvas = document.createElement("canvas");
+                canvas.width = img.width;
+                canvas.height = img.height;
+
+                let ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, img.width, img.height);
+                let dataURL = canvas.toDataURL("image/jpeg");
+                return dataURL;
+            },
+
+            saveAs(blob, name) {
+                let a = document.createElement('a')
+                let url = window.URL.createObjectURL(blob)
+                a.href = url
+                a.download = name
+                a.click()
+            },
+
+            main(index, row) {
+                console.log(row)
+                let imgList = [...document.getElementsByTagName('el-img')]
+                console.log(imgList)
+                let buffer = imgList.map(this.getBase64Image)
+                console.log('buffer', buffer)
+                let zip = new JSZip();
+
+                let p = buffer.map(
+                    x => zip.file(Math.random().toString('36').slice(3) + '.jpeg', x.split(',')[1], {base64: true})
+                )
+
+                Promise.all(p)
+                zip.generateAsync({type: "blob"}).then(function (content) {
+                    // see FileSaver.js
+                    this.saveAs(content, "example.zip");
+
+                });
+            },
+            // jszip打包下载图片
+            saveImgZip(index, row) {
+                console.log(row)
+                var name = row.align
+                var imgUrlArr = row.img_list; // 图片列表
+                var imgUrlArrs = imgUrlArr
+                var imgBase64 = {};//存放转成base64的图片，采用键值对形式就行存储，不采用数组。因为数组在异步中会导致存取数据的无序，数据混乱
+                var imgNameArr = [];  // 图片名称
+                var imageSuffix = []; // 图片后缀
+                for (var i = 0; i < imgUrlArrs.length; i++) {
+                    // 图片后缀
+                    var suffix = imgUrlArrs[i].substring(imgUrlArrs[i].lastIndexOf("."));
+                    imageSuffix.push(suffix);
+                    //获取文件的名称
+                    var startIndex = imgUrlArrs[i].lastIndexOf("/");
+                    var endIndex = imgUrlArrs[i].lastIndexOf(".");
+                    var fileName = imgUrlArrs[i].substring(startIndex + 1, endIndex);
+                    imgNameArr.push(fileName);
+                }
+                // 创建JSZip对象
+                var zip = new JSZip();
+                // 创建文件夹
+                var img = zip.folder("images");
+                // 读取图片返回base64
+                for (var i = 0; i < imgUrlArr.length; i++) {
+                    this.getBase64(imgUrlArr[i], i).then(function (base64, index) {
+                        //imgBase64.push(base64.substring(22));  // 去掉base64的图片格式前缀
+                        imgBase64[index] = base64.substring(22);
+                    }, function (err) {
+                        console.log(err);
+                    });
+                }
+
+                function downloadZip() {
+                    setTimeout(function () {
+                        if (imgUrlArr.length == Object.keys(imgBase64).length) {
+                            for (var i = 0; i < imgUrlArr.length; i++) {
+                                img.file(imgNameArr[i] + imageSuffix[i], imgBase64[i], {base64: true});
+                            }
+                            zip.generateAsync({type: "blob"}).then(function (content) {
+                                saveAs(content, '{{name}}'); // zip包命名
+                            });
+                        } else {
+                            downloadZip();
+                        }
+                    }, 100);
+                }
+
+                downloadZip();
+            },
+            async down(index, row) {
+                try {
+                    let zip = new JSZip();
+                    for (let i = 0; i < row.video_list.length; i++) {
+                        let lst = this.arr[i].split(".");
+                        let fileType = lst[lst.length - 1];
+
+                        await this.getFile(this.arr[i]).then(pdf => {
+                            zip.file("HelloPDF.pdf", pdf, {binary: true});
+                        });
+                    }
+                    this.downImg(zip);
+                } catch (err) {
+                    console.log("err", err);
+                }
+            },
+            getFile(url) {
+                return new Promise((resolve, reject) => {
+                    // 这里的$http是Vue里的axios
+                    this.$http({
+                        method: "get",
+                        url,
+                        responseType: "arraybuffer"
+                    })
+                        .then(data => {
+                            resolve(data.data);
+                        })
+                        .catch(error => {
+                            reject("PDF加载失败：" + error);
+                        });
+                });
+            },
+
+            //图片转base64; 传入图片路径，返回base64
+            getBase64(img, index) {
+                function getBase64Image(img, width, height) {
+                    var canvas = document.createElement("canvas");
+                    canvas.width = width ? width : img.width;
+                    canvas.height = height ? height : img.height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                    var dataURL = canvas.toDataURL();
+                    return dataURL;
+                }
+
+                var image = new Image();
+                image.crossOrigin = 'Anonymous';
+                image.src = img;
+                /*
+                * deferred对象是一个延迟对象，意思是函数延迟到某个点才开始执行，改变执行状态的方法有两个（成功：resolve和失败：reject），
+                * 分别对应两种执行回调（成功回调函数：done和失败回调函数fail）
+                * */
+                var deferred = $.Deferred();
+                if (img) {
+                    image.onload = function () {
+                        // 执行成功回调
+                        deferred.resolve(getBase64Image(image), index);
+                    }
+                    return deferred.promise();
+                }
+            },
+            //通过url 转为blob格式的数据
+            getImgArrayBuffer(url) {
+                let _this = this;
+                console.log(url)
+                return new Promise((resolve, reject) => {
+                    //通过请求获取文件blob格式
+                    let xmlhttp = new XMLHttpRequest();
+                    xmlhttp.open("GET", url, true);
+                    xmlhttp.responseType = "blob";
+                    xmlhttp.onload = function () {
+                        if (this.status == 200) {
+                            resolve(this.response);
+                        } else {
+                            reject(this.status);
+                        }
+                    }
+                    xmlhttp.send();
+                });
+            },
+            // imgDataUrl 数据的url数组
+            BatchDownload(index, row) {
+                console.log(row)
+                let _this = this;
+                let zip = new JSZip();
+                let cache = {};
+                let promises = [];
+                _this.title = '正在加载压缩文件';
+
+                for (let item of row.video_list) {
+                    console.log(item)
+                    const promise = _this.getImgArrayBuffer(item).then(data => {
+                        // 下载文件, 并存成ArrayBuffer对象(blob)
+                        console.log(data)
+                        zip.file(Math.random().toString('36').slice(3) + '.mp4', data, {binary: true}); // 逐个添加文件
+                        cache['item'] = data;
+                    });
+                    promises.push(promise);
+                }
+                for (let item of row.img_list) {
+                    console.log(item)
+                    const promise = _this.getImgArrayBuffer(item).then(data => {
+                        // 下载文件, 并存成ArrayBuffer对象(blob)
+                        console.log(data)
+                        zip.file(Math.random().toString('36').slice(3) + '.png', data, {binary: true}); // 逐个添加文件
+                        cache['item'] = data;
+                    });
+                    promises.push(promise);
+                }
+
+                Promise.all(promises).then(() => {
+                    zip.generateAsync({type: "blob"}).then(content => {
+                        _this.title = '正在压缩';
+                        // 生成二进制流
+                        this.saveAs(content, row.alias); // 利用file-saver保存文件  自定义文件名
+                        _this.title = '压缩完成';
+                    });
+                }).catch(res => {
+                    _this.$message.error('文件压缩失败');
+                });
+            },
+        },
+        saveAs(blob, name) {
+            let a = document.createElement('a')
+            let url = window.URL.createObjectURL(blob)
+            a.href = url
+            a.download = name
+            a.click()
+        }
+
+
+    })
+</script>
+</html>

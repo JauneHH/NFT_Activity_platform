@@ -1,0 +1,75 @@
+直接 run app.py
+flaskr下的__init__修改数据库密码
+
+pip install numpy matplotlib pillow wordcloud imageio jieba snownlp itchat -i https://pypi.tuna.tsinghua.edu.cn/simple
+安装jieba
+
+flask initdb 初始化数据库
+
+运行forge 生成一部分 数据
+
+
+把城市的拼音转化中文 🙏
+用户活动中间表加上城市
+用户活动默认时间 改为 date
+中间表加上性别，地点
+用户上传文件 不需要type
+用户评论改为json
+！！！ 用户奖励兑换码   活动人数
+加一个活动形式 form rule
+/api/activity/pic 合并到活动信息
+user/activity_user_imgs 加上 评论 ,活动状态
+用户活动 状态改为 user_activity_status
+
+9.28
+修改了manage前三个函数
+
+10.2
+修改了登陆接口
+
+在@app.route('/api/manager/activity_publish', methods=['POST'])接口
+修改了img_url
+
+活动数据统计有简单修改
+
+10.4
+活动详情有作修改
+
+11.15
+model添加Market类
+acitivity添加activity_market接口
+activity_search修改日期
+
+12.2
+user类添加photographer，
+添加upload_NFT接口
+修改NFT类
+添加user_NFT_table类
+
+12.24
+修改/api/NFT_information接口
+添加/api/NFT_name接口
+添加/api/User_photographer接口
+修改/user/register接口
+
+1.2
+以下需要修改为服务器路径
+1.upload_NFT 二维码路径QRcode_url
+2.Get_NFT接口 打开文件all_the_text路径 '/root/myflask/flaskr/static/NFT/QRcode/'
+
+1.6
+修改activity_information接口
+1.13
+增加activity_result接口
+1.20
+修改register接口
+修改/api/Get_NFT接口
+修改/api/NFT_name接口
+修改model中的NFT、user_nft_table、user表
+添加/api/NFT_verify接口
+添加/api/activity_poster接口
+1.25
+修改api/nft_user
+修改api/nft_verify
+1.27
+修改/api/activity_information接口

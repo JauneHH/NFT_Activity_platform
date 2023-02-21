@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta http-equiv="Access-Control-Allow-Origin" content="*"/>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+    <title>user</title>
+</head>
+<body>
+<div id="app">
+ <template>
+    <el-table
+
+      :data="user_list.filter(data => !search || data.name.toLowerCase().includes(search.toLowerCase()))"
+
+      style="width: 100%">
+      <el-table-column
+        prop="id"
+        label="id"
+        width="80">
+      </el-table-column>
+      <el-table-column
+        prop="name"
+        label="姓名"
+        width="80">
+      </el-table-column>
+      <el-table-column
+        prop="img_url"
+        label="头像"
+      width="150">
+          <template slot-scope="props">
+                    <el-image
+                            style="width: 100px; height: 100px"
+                            :src="props.row.img_url"
+                            :fit="fit"></el-image>
+                </template>
+      </el-table-column>
+        <el-table-column
+        prop="photographer"
+        label="摄影师权限"
+        sortable
+        width="150">
+            <template slot-scope="scope">
+                <div :class="scope.row.photographer=='有权限'?'is_photographer':'no_photographer '">
+            [[scope.row.photographer]]
+        </div>
+
+                </template>
+
+      </el-table-column>
+        <el-table-column label="修改权限">
+            <template slot="header" slot-scope="scope">
+                        <el-input
+                                v-model="search"
+                                size="mini"
+                                placeholder="输入用户名称关键字搜索"/>
+                    </template>
+                    <template slot-scope="scope">
+                        <el-button
+                                size="mini"
+                                @click="modify_user_photographer(scope.$index, scope.row,1)">添加权限
+                        </el-button>
+                        <el-button
+                                size="mini"
+                                type="danger"
+                                @click="modify_user_photographer(scope.$index, scope.row,0)">删除权限
+                        </el-button>
+                    </template>
+                </el-table-column>
+    </el-table>
+  </template>
+    </div>
+</body>
+<style>
+    .is_photographer{
+        color: #fc0f33;
+    }
+    .no_photographer{
+        color: #808080;
+    }
+</style>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="./../static-vue/lib/vue/vue.js"></script>
+<!-- import JavaScript -->
+<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+<script>
+    new Vue({
+        delimiters: ['[[', ']]'],
+        el: "#app",
+        data: {
+            show: true,
+            showUser: false,
+            cardShow: false,
+            search: '',
+            user_list:[],
+            tableActivity: '[]',
+            tableUser: '[]',
+            static_url: 'user_activity_url?activity_id=',
+            user_activity_url: '',
+        },
+
+        methods: {
+            getActivityList() {
+                let that = this
+                axios({
+                    method: 'post',
+                    url: 'api/manager/user_photographer',
+                    headers: {'Content-Type': 'multipart/form-data'},
+                    onUploadProgress: function (progressEvent) {
+                        console.log(progressEvent,'236')
+                    },
+                })
+                    .then(function (ret) {
+                        console.log(ret.data['msg'])
+                        that.user_list = ret.data['msg']
+                        console.log(that.user_list)
+                    })
+                    .catch(function (err) {
+                        console.log(err)
+                    })
+
+            },
+
+            modify_user_photographer(index,row,flag) {
+                console.log(index,row)
+                let that = this
+                let param=new FormData()
+                param.append('userid',row.id)
+                param.append('photographer',flag)
+                axios({
+                    method: 'post',
+                    url: 'api/manager/modify_user_photographer',
+                    headers: {'Content-Type': 'multipart/form-data'},
+                    data: param,
+                    onUploadProgress: function (progressEvent) {
+                        console.log(progressEvent,'236')
+                    },
+                })
+                    .then(function (ret) {
+                        console.log(ret)
+                        alert('修改权限成功!');
+
+                    })
+                    .catch(function (err) {
+
+                        console.log(err)
+                    })
+                setTimeout(function(){location.reload()},1000);
+
+            },
+        },
+        mounted() {
+            this.getActivityList()
+        }
+
+    })
+</script>
+</html>

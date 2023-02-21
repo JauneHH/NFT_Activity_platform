@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>用户注册</title>
+	<link rel="stylesheet" href="./test.css"/>
+	<link rel="stylesheet" href="../../css/mqpages.css"/>
+	<script src="../../js/mqpages.js"></script>
+	<script src="../../lib/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../lib/jquery-3.4.1/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../lib/element2.13.0/lib-master/index.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../../lib/layer/layer.js"></script>
+	<script src="../../lib/axios/dist/axios.js"></script>
+</head>
+<body>
+<template>
+	<div id="app">
+	<div>
+		<!--创建一个cavas  用来存放图片-->
+		<canvas  id="cavasimg" width="607" height="367"  ></canvas>
+
+		<!--        声明一个按钮  用来触发下载图片到本地-->
+		<input type="button" id="btnsavaImg" value="保存图片到本地" @click="Download()"/>
+	</div>
+	</div>
+</template>
+</body>
+<script src="./test.js"></script>
+</html>

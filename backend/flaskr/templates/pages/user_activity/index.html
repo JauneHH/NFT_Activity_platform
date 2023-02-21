@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./index.css"/>
+    <link rel="stylesheet" href="../../css/mqpages.css"/>
+    <script src="../../js/mqpages.js"></script>
+    <script src="../../lib/vue/vue.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/jquery-3.4.1/jquery-3.4.1.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/element2.13.0/lib-master/index.js" type="text/javascript" charset="utf-8"></script>
+    <script src="../../lib/layer/layer.js"></script>
+    <script src="../../lib/axios/dist/axios.js"></script>
+
+    <title>Title</title>
+</head>
+<body>
+<div id="app">
+
+    <template>
+
+
+        <el-table
+                :data="tableUser"
+                border
+                :cell-style="cellStyle"
+                style="width: 100%; margin-top: 20px"
+                @expand-change="expendChange"
+        >
+
+            <el-table-column
+                    prop="user_id"
+                    label="ID"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="alias"
+                    label="昵称"
+                    width="100">
+
+            </el-table-column>
+            <el-table-column
+                    prop="img_url"
+                    label="头像"
+                    width="120">
+                <template slot-scope="props">
+                    <el-image
+                            style="width: 100px; height: 100px"
+                            :src="props.row.img_url"
+                            :fit="fit"></el-image>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    prop="user_comment"
+                    label="评论"
+                    width="100">
+            </el-table-column>
+            <el-table-column
+                    prop="user_activity_status"
+                    label="提交状态"
+                    width="100">
+            </el-table-column>
+            <el-table-column label="查看上传结果" width="180" type="expand">
+                <template slot-scope="scope">
+                    <div class="demo-image__preview">
+                        <el-form label-position="top">
+                            <el-form-item label="用户上传的图片">
+                                <el-checkbox-group v-model="form.url_list_select">
+                                    <el-checkbox v-for="Url in user_upload_img" :label="Url">
+                                        <el-image
+                                                style="width: 100px; height: 100px"
+                                                :src="Url"
+                                                :preview-src-list="user_upload_img">
+                                        </el-image>
+                                    </el-checkbox>
+                                </el-checkbox-group>
+                            </el-form-item>
+                            <el-button type="primary" @click="onSubmit">立即下载</el-button>
+                            <el-button>取消</el-button>
+                            </el-form-item>
+                        </el-form>
+                        <div style="margin-top: 20px">
+                            <el-form>
+                                <el-form-item label="用户评论:">
+                                    <span>{{ scope.row.user_comment}}</span>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+
+                    </div>
+                </template>
+            </el-table-column>
+            <el-table-column
+                    fixed="right"
+                    align="left">
+                <template slot="header" slot-scope="scope">
+                    <el-input
+                            v-model="search"
+                            size="mini"
+                            placeholder="输入关键字搜索"/>
+                </template>
+                <template slot-scope="scope">
+                    <el-button
+                            @click="activity_user_result_success(scope.$index, scope.row)"
+                            size="mini"
+                            type="danger"
+                    >审核通过
+                    </el-button>
+                    <el-button
+                            @click="activity_user_result_fail(scope.$index, scope.row)"
+                            size="mini"
+
+                    >审核失败
+                    </el-button>
+                </template>
+            </el-table-column>
+
+        </el-table>
+    </template>
+
+</div>
+</body>
+<script src="./index.js"></script>
+</html>
